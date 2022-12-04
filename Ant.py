@@ -25,12 +25,14 @@ class Ant(object):
 
     # TODO: Implement, now it moves randomly
     def choose_cell(self, cells):
+        # Choix d'une cellule au hasard avec une probabilité self.rand
+        cell_result = random.choice(cells)
+        if(random.random() < self.rand):
+            return cell_result
+
+        # Mode exploration
         somme_cells = 0
         cells_probability = [] 
-        # On initialise la cellule resultat avec une cellule au hasard au cas où
-        # les cellules voisines n'ont ni odeur, ni pheromone ? (auquel cas, division par 0 plus bas) 
-        cell_result = random.choice(cells)
-
         if(self.mode == EXPLORE):
             for cell in cells:
                 phero = cell[3]
@@ -46,9 +48,13 @@ class Ant(object):
                 smell = cell[2]
                 #Calcul de la probabilité de la cellule courante
                 current_cell_probability= (pow(phero, self.alpha) * pow(smell, self.beta))/somme_cells
+                # current_cell_probability est parfois un complex, et cela pose probleme par la suite dans le random.choices
+                if isinstance(current_cell_probability, complex):
+                    return cell_result
                 #La somme des elements de cells_probability vaudra 1 à la fin de la boucle
                 cells_probability.append(current_cell_probability)
 
+        #Mode retour
         else:
             for cell in cells:
                 phero = cell[4]
@@ -60,10 +66,13 @@ class Ant(object):
             for cell in cells:
                 phero = cell[4]
                 current_cell_probability = pow(phero, self.alpha)/somme_cells
+                # current_cell_probability est parfois un complex, et cela pose probleme par la suite dans le random.choices
+                if isinstance(current_cell_probability, complex):
+                    return cell_result
                 cells_probability.append(current_cell_probability)
         
-        #On choisit une cellule au hasard selon les poids de probabilité calculés auparavant
-        cell_result = random.choices(cells, cells_probability, k=1)[0]
+        #On choisit une cellule selon les poids de probabilité calculés auparavant
+        cell_result = random.choices(cells, weights=cells_probability, k=1)[0]
         return cell_result
 
     def move(self, env: Environment):
