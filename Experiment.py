@@ -86,12 +86,12 @@ class Experiment(object):
         plt.plot(fitnesses, label="moy_aptitude")
         leg = plt.legend(loc='lower right')
 
-        # Autres
-        h= plt.figure(3)
-        # plt.plot(survived, label="survived")
-        plt.plot(total_food, label="nourriute totale ramenée")
-        # plt.plot(energy, label="energy at beginning")
-        leg = plt.legend(loc='lower right')
+        # # Autres
+        # h= plt.figure(3)
+        # # plt.plot(survived, label="survived")
+        # plt.plot(total_food, label="nourriute totale ramenée")
+        # # plt.plot(energy, label="energy at beginning")
+        # leg = plt.legend(loc='lower right')
 
         plt.show()
 
@@ -165,7 +165,7 @@ class Experiment(object):
 
         # ELITISME (on garde les meilleurs chromosomes avant de suivre la démarche classique de sélection)
         orderedAnts = sorted(ants, key=lambda x : x.fitness, reverse=True) # ants ordoné par aptitude
-        nbElite = len(ants) if len(ants) < 5 else 5 # nb d'elite qu'on garde
+        nbElite = len(ants) if len(ants) < 10 else 10 # nb d'elite qu'on garde
         x = int(self.env.lines / 2) # coordonnées de départ 
         y = int(self.env.columns / 2)  
         for i in range(number_of_ants): 
@@ -183,7 +183,7 @@ class Experiment(object):
                 new_ant = self.mutate(new_ant)
                 new_gen.append(new_ant)
        
-        # NON ELITISME
+        # # NON ELITISME
         # for _ in range(number_of_ants): 
         #     [ant1, ant2] = self.select(ants, aptitudeWeight)
         #     new_ant = self.cross(ant1, ant2)
