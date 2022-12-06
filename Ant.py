@@ -34,23 +34,15 @@ class Ant(object):
         somme_cells = 0
         cells_probability = [] 
         if(self.mode == EXPLORE):
-            for cell in cells:
+            for cell in cells: 
                 phero = cell[3]
                 smell = cell[2]
                 somme_cells += pow(phero, self.alpha) * pow(smell, self.beta)
 
-            #Si aucune odeur ou pheromone dans les cellules voisines, on renvoie une cellule au hasard
-            if somme_cells == 0:
-                return cell_result
-                
             for cell in cells:         
                 phero = cell[3]
                 smell = cell[2]
-                #Calcul de la probabilité de la cellule courante
                 current_cell_probability= (pow(phero, self.alpha) * pow(smell, self.beta))/somme_cells
-                # current_cell_probability est parfois un complex, et cela pose probleme par la suite dans le random.choices
-                if isinstance(current_cell_probability, complex):
-                    return cell_result
                 #La somme des elements de cells_probability vaudra 1 à la fin de la boucle
                 cells_probability.append(current_cell_probability)
 
@@ -60,15 +52,9 @@ class Ant(object):
                 phero = cell[4]
                 somme_cells += pow(phero, self.alpha)
 
-            if somme_cells == 0:
-                return cell_result
-
             for cell in cells:
                 phero = cell[4]
                 current_cell_probability = pow(phero, self.alpha)/somme_cells
-                # current_cell_probability est parfois un complex, et cela pose probleme par la suite dans le random.choices
-                if isinstance(current_cell_probability, complex):
-                    return cell_result
                 cells_probability.append(current_cell_probability)
         
         #On choisit une cellule selon les poids de probabilité calculés auparavant
@@ -92,7 +78,7 @@ class Ant(object):
         cell = self.choose_cell(cells)
 
         # add pheromone based on energy consumed
-        energy_consumed = self.max_energy - self.energy
+        energy_consumed = self.max_energy - self.energy       
         if self.mode == EXPLORE:
             env.pheromone_h[self.x][self.y] += 10/(1+energy_consumed)
         else:

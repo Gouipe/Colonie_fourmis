@@ -10,9 +10,9 @@ class Environment(object):
         self.columns = columns
         self.matrix = [[FREE for i in range(self.columns)] for j in range(self.lines)]  # cell state FREE/OBSTACLE
         self.values = [[0 for i in range(self.columns)] for j in range(self.lines)]  # food value in cell
-        self.smell = [[0 for i in range(self.columns)] for j in range(self.lines)]  # smell of food in cell
-        self.pheromone_f = [[0 for i in range(self.columns)] for j in range(self.lines)]  # pheromone p2 in cell
-        self.pheromone_h = [[0 for i in range(self.columns)] for j in range(self.lines)]  # pheromone p1 in cell
+        self.smell = [[1 for i in range(self.columns)] for j in range(self.lines)]  # smell of food in cell
+        self.pheromone_f = [[1 for i in range(self.columns)] for j in range(self.lines)]  # pheromone p2 in cell
+        self.pheromone_h = [[1 for i in range(self.columns)] for j in range(self.lines)]  # pheromone p1 in cell
 
         self.energy_death_thresh = energy_death_thresh
         if energy_death_thresh is None:
@@ -28,8 +28,8 @@ class Environment(object):
         self.number_of_ants = len(ants)
 
     def reset_pheromone(self):
-        self.pheromone_f = [[0 for i in range(self.columns)] for j in range(self.lines)]  # pheromone in node
-        self.pheromone_h = [[0 for i in range(self.columns)] for j in range(self.lines)]  # pheromone in node
+        self.pheromone_f = [[1 for i in range(self.columns)] for j in range(self.lines)]  # pheromone in node
+        self.pheromone_h = [[1 for i in range(self.columns)] for j in range(self.lines)]  # pheromone in node
 
     def kill(self, ant):
         self._ants.remove(ant)

@@ -114,11 +114,16 @@ class Experiment(object):
     # TODO implement
     def select(self, ants, weight=None):
         # return random.choices(ants, k=2)
+
+        # Sélection par proportionnalité à l'aptitude
         # Sélection de 2 fourmis. La probabilité qu'une fourmi soit selectionnée est proportionnelle à son aptitude
         if weight != None and sum(weight) > 0: 
             return random.choices(ants, weight, k=2)
         else:
             return random.choices(ants, k=2)
+
+        # Sélection par rang
+
 
     # TODO implement
     def cross(self, ant1, ant2):
@@ -126,7 +131,7 @@ class Experiment(object):
         x = int(self.env.lines / 2)
         y = int(self.env.columns / 2)
         # Nouvelle fourmi possédant alpha et beta de la première fourmi, et possédant rand et max_energy de la deuxième fourmi
-        return Ant(x, y, ant1.alpha, ant1.beta, ant2.rand, ant2.max_energy)
+        return Ant(x, y, ant1.alpha, ant2.beta, ant1.rand, ant2.max_energy)
 
     # TODO implement
     def mutate(self, ant):
@@ -141,6 +146,7 @@ class Experiment(object):
             ant.rand = self._get_random_value(self.ranges[2])
         if random.random() < 0.005:
             ant.max_energy = self._get_random_value(self.ranges[3])
+            ant.energy = ant.max_energy
         return ant
 
     """
@@ -169,7 +175,10 @@ class Experiment(object):
                 new_gen.append(Ant(x, y, elite.alpha, elite.beta, elite.rand, elite.max_energy))
             # Ensuite sélection classique
             else:    
+                #Sélection par proportionnalité à l'aptitude
                 [ant1, ant2] = self.select(ants, aptitudeWeight)
+                #Sélection par rang
+                #[ant1, ant2] = self.select(sorted(ants, key=lambda x : x.fitness))
                 new_ant = self.cross(ant1, ant2)
                 new_ant = self.mutate(new_ant)
                 new_gen.append(new_ant)
