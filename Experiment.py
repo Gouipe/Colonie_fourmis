@@ -130,14 +130,14 @@ class Experiment(object):
         # return ant1
         x = int(self.env.lines / 2)
         y = int(self.env.columns / 2)
-        # Nouvelle fourmi possédant alpha et beta de la première fourmi, et possédant rand et max_energy de la deuxième fourmi
+        # Nouvelle fourmi possédant alpha et rand de la première fourmi, et possédant beta et max_energy de la deuxième fourmi
         return Ant(x, y, ant1.alpha, ant2.beta, ant1.rand, ant2.max_energy)
 
     # TODO implement
     def mutate(self, ant):
         # return ant
 
-        #Chaque paramètre a 0.5% de chances d'être modifié au hasars
+        #Chaque paramètre a 0.5% de chances d'être modifié au hasard
         if random.random() < 0.005:
             ant.alpha = self._get_random_value(self.ranges[0]) 
         if random.random() < 0.005:
